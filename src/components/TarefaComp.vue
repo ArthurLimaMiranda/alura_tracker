@@ -1,8 +1,11 @@
 <template>
     <BoxComp>
         <div class="columns">
-            <div class="column is-7">
+            <div class="column is-4">
                 {{ tarefa.descricao || 'Secreto 🤫🤫🤫'}}
+            </div>
+            <div class="column is-3">
+                {{ tarefa.projeto?.nome || '??' }}
             </div>
             <div class="column">
                 <CronometroComp :tempo-em-segundos="tarefa.duracao"/>
