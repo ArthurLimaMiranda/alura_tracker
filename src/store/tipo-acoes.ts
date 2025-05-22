@@ -1,0 +1,10 @@
+export const GET_PROJETOS = "GET_PROJETOS"
+export const POST_PROJETO = "POST_PROJETO"
+export const PUT_PROJETO = "PUT_PROJETO"
+export const DELETE_PROJETO = "DELETE_PROJETO"
+
+
+export const GET_TAREFAS = "GET_TAREFAS"
+export const POST_TAREFA = "POST_TAREFA"
+export const PUT_TAREFA = "PUT_TAREFA"
+export const DELETE_TAREFA = "DELETE_TAREFA"

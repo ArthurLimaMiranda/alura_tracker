@@ -1,6 +1,6 @@
 <template>
     <BoxComp>
-        <div class="columns">
+        <div class="columns clicavel" @click="tarefaClicada">
             <div class="column is-4">
                 {{ tarefa.descricao || 'Secreto 🤫🤫🤫'}}
             </div>
@@ -26,12 +26,24 @@ export default defineComponent({
         CronometroComp,
         BoxComp
     },
+    emits: ['tarefaSelecionada'],
     props: {
         tarefa:{
             type: Object as PropType<ITarefa>,
             required: true
         }
+    },
+    methods: {
+        tarefaClicada():void{
+            this.$emit('tarefaSelecionada', this.tarefa)
+        }
     }
 })
 </script>
+
+<style scoped>
+.clicavel{
+    cursor: pointer;
+}
+</style>
 

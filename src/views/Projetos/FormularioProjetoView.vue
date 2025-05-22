@@ -20,8 +20,8 @@
 import { TipoNotificacao } from '@/interfaces/INotificacoes';
 import { notificarMixin } from '@/mixins/notificar';
 import { useStore } from '@/store';
-import { ALTERA_PROJETO, NOVO_PROJETO } from '@/store/tipo-mutacoes';
-import { defineComponent } from 'vue';
+import { POST_PROJETO, PUT_PROJETO } from '@/store/tipo-acoes';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'FormularioProjetosView',
@@ -31,39 +31,39 @@ export default defineComponent({
     }
   },
   mixins: [notificarMixin],
-  mounted() {
-    if(this.id){
-      const projeto = this.store.state.projetos.find(proj => proj.id == this.id)
-      this.nomeProjeto = projeto?.nome || ''
-      console.log(this.id)
-    }
-  },
-  data() {
-    return{
-      nomeProjeto: '',
-    }
-  },
+  
   methods: {
-    salvar(){
-      if(this.id){
-        console.log('oiiiiiiii')
-        this.store.commit(ALTERA_PROJETO,{
-          id:this.id, 
-          nome: this.nomeProjeto       
-        })
-      }
-      else{
-        this.store.commit(NOVO_PROJETO, this.nomeProjeto)
-      }
+    sucesso(){
       this.nomeProjeto = ''
       this.notificar(TipoNotificacao.SUCESSO, 'Excelente! B)', 'O projeto foi salvo')
       this.$router.push('/projetos')
     },
+    salvar(){
+      if(this.id){
+        this.store.dispatch(PUT_PROJETO,{
+          id:this.id, 
+          nome: this.nomeProjeto       
+        })
+        .then(()=>this.sucesso())
+      }
+      else{
+        this.store.dispatch(POST_PROJETO, this.nomeProjeto)
+        .then(()=>this.sucesso())
+      }
+    },
   },
-  setup(){
+  setup(props){
     const store = useStore()
+
+    const nomeProjeto = ref("")
+
+    if(props.id){
+      const projeto = store.state.projeto.projetos.find(proj => proj.id == props.id)
+      nomeProjeto.value = projeto?.nome || ''
+    }
     return {
-      store
+      store,
+      nomeProjeto
     }
   }
 })
